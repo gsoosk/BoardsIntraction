@@ -35,9 +35,8 @@ void loop() {
 
   float result = x*x + y*y;
 
-  char charResult[32];                
-  dtostrf(result, 8, 8, charResult);
-  Serial.write(charResult);
+  String dataToSend = String(result);
+  Serial.print(result);
   delay(100);
 }
 
