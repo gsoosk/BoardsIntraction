@@ -27,10 +27,12 @@ int bluetoothBuffCurr = 0;
 //  9         8         10
 AltSoftSerial sensorBoardSerial;
 const int SENSOR_BOARD_RATE = 9600;
-const int SENSOR_BOARD_BUFF_SIZE = 8;
-char sensorBoardBuff[SENSOR_BOARD_BUFF_SIZE];
-int sensorBoardBuffCurr = 0;
+char* sensorBoardBuff = (char*) malloc(0 * sizeof(char));
+int sensorBoardBuffSize = 0;
+char endDeliminator = '#';
 
+
+bool x = true;
 
 void setup() {
   // set up the LCD's number of columns and rows:
@@ -67,14 +69,19 @@ void showBluetoothData()
 
 void handleDataFromSensorBoard()
 {
-  sensorBoardBuff[sensorBoardBuffCurr] = Serial.read();
-  sensorBoardBuffCurr ++;
-  if(sensorBoardBuffCurr == SENSOR_BOARD_BUFF_SIZE)
+  char data = Serial.read();
+  if(data == endDeliminator)
+  {
     showSensorBoardData();
+    return;
+  }
+  sensorBoardBuffSize ++;
+  sensorBoardBuff = (char*) realloc(sensorBoardBuff, sensorBoardBuffSize * sizeof(char));
+  sensorBoardBuff[sensorBoardBuffSize - 1] = data ;
 }
 void showSensorBoardData()
 {
   lcd.setCursor(0, 1);
   lcd.print(sensorBoardBuff);
-  sensorBoardBuffCurr = 0;
+  sensorBoardBuffSize = 0;
 }
