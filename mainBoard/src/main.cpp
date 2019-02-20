@@ -27,9 +27,10 @@ int bluetoothBuffCurr = 0;
 //  9         8         10
 AltSoftSerial sensorBoardSerial;
 const int SENSOR_BOARD_RATE = 9600;
-char* sensorBoardBuff = (char*) malloc(0 * sizeof(char));
-int sensorBoardBuffSize = 0;
-char endDeliminator = '#';
+String sensorBoardBuff = "";
+char END_DELIMINATOR = '#';
+char DATA_DELIMINATOR = ':';
+
 
 
 bool x = true;
@@ -69,19 +70,24 @@ void showBluetoothData()
 
 void handleDataFromSensorBoard()
 {
-  char data = Serial.read();
-  if(data == endDeliminator)
+  char data = sensorBoardSerial.read();
+  if(data == END_DELIMINATOR)
   {
     showSensorBoardData();
     return;
   }
-  sensorBoardBuffSize ++;
-  sensorBoardBuff = (char*) realloc(sensorBoardBuff, sensorBoardBuffSize * sizeof(char));
-  sensorBoardBuff[sensorBoardBuffSize - 1] = data ;
+  sensorBoardBuff += data ;
 }
+
 void showSensorBoardData()
-{
+{ 
+  String temperature =  sensorBoardBuff.substring(0, sensorBoardBuff.indexOf(DATA_DELIMINATOR));
   lcd.setCursor(0, 1);
-  lcd.print(sensorBoardBuff);
-  sensorBoardBuffSize = 0;
+  lcd.print(temperature.c_str());
+
+  String distance = sensorBoardBuff.substring(sensorBoardBuff.indexOf(DATA_DELIMINATOR) + 1);
+  lcd.setCursor(0, 2);
+  lcd.print(distance.c_str());
+
+  sensorBoardBuff = "";
 }
