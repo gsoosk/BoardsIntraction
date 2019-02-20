@@ -43,5 +43,5 @@ void loop() {
   String msg = tempStr + ":" + distStr + "#";
   char* buffer = (char*) malloc(sizeof(char)*msg.length()+1);
   msg.toCharArray(buffer, msg.length()+1);
-  Serial.write(buffer);
+  Serial.println(buffer);
 }
