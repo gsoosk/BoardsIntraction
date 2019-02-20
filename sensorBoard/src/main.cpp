@@ -27,7 +27,7 @@ void loop() {
   msg.toCharArray(buffer, msg.length()+1);
   
   Serial.write(buffer);
-  delay(200);
+  delay(100);
 }
 
 int readDistance(){
