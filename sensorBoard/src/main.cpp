@@ -26,8 +26,7 @@ void loop() {
   char* buffer = (char*) malloc(sizeof(char)*msg.length()+1);
   msg.toCharArray(buffer, msg.length()+1);
   
-  //Serial.write(buffer);
-  Serial.println(buffer);
+  Serial.write(buffer);
   delay(200);
 }
 
@@ -54,6 +53,6 @@ String encodeData(float tempreture, long distance){
   String distStr = String(distance);
   
   String msg = tempStr + ":" + distStr + "#";
-  
+
   return msg;
 }
