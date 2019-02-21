@@ -60,7 +60,7 @@ float getDataFromSensor(int regAddr0, int regAddr1, int regAddr2, int regAddr3){
 }
 
 byte getByte(){
-  Wire.requestFrom(110, 1);   
+  Wire.requestFrom(UT_SENSOR_ADDR, 1);   
   return Wire.read();       
 }
 
