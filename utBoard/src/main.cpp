@@ -24,6 +24,7 @@ union {
 } uData;
 
 void setup() {
+  float result = 0;
   Wire.begin();        
   Serial.begin(9600); 
   turnOnSensor(); 
@@ -33,7 +34,7 @@ void loop() {
   float x = getDataFromSensor(X_REG_0_ADDR, X_REG_1_ADDR, X_REG_2_ADDR, X_REG_3_ADDR);
   float y = getDataFromSensor(Y_REG_0_ADDR, Y_REG_1_ADDR, Y_REG_2_ADDR, Y_REG_3_ADDR);
 
-  float result = x*x + y*y;
+  float result = result + x*x + y*y;
 
   Serial.print(result, 17);
   delay(100);
