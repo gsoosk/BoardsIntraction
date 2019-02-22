@@ -16,8 +16,13 @@ const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 const int BLUETOOTH_RATE = 9600;
-const int BLUETOOTH_BUFF_SIZE = 19;
-char bluetoothBuff[BLUETOOTH_BUFF_SIZE];
+const int BLUETOOTH_BUFF_SIZE = 4;
+union 
+{
+  float val;
+  byte bytes[BLUETOOTH_BUFF_SIZE];
+} bluetoothBuff;
+
 int bluetoothBuffCurr = 0;
 
 
@@ -56,7 +61,7 @@ void loop() {
 
 void handleDataFromBluetooth()
 {
-  bluetoothBuff[bluetoothBuffCurr] = Serial.read();
+  bluetoothBuff.bytes[bluetoothBuffCurr] = Serial.read();
   bluetoothBuffCurr ++;
   if(bluetoothBuffCurr == BLUETOOTH_BUFF_SIZE)
     showBluetoothData();
@@ -64,7 +69,9 @@ void handleDataFromBluetooth()
 void showBluetoothData()
 {
   lcd.setCursor(0, 0);
-  lcd.print(bluetoothBuff);
+  char outstr[20];
+  dtostrf(bluetoothBuff.val,16, 15, outstr);
+  lcd.println(outstr);
   bluetoothBuffCurr = 0;
 }
 

@@ -17,14 +17,21 @@ float getDataFromSensor(int regAddr0, int regAddr1, int regAddr2, int regAddr3);
 byte getByte();
 float convert4ByteToFloat(byte num[4]);
 void turnOnSensor();
+void sendResult();
 
 union {
   float fData;
   byte bData[4];
 } uData;
 
+union
+{
+  float val;
+  byte bytes[4];
+} result;
+
 void setup() {
-  float result = 0;
+  result.val = 0;
   Wire.begin();        
   Serial.begin(9600); 
   turnOnSensor(); 
@@ -34,12 +41,18 @@ void loop() {
   float x = getDataFromSensor(X_REG_0_ADDR, X_REG_1_ADDR, X_REG_2_ADDR, X_REG_3_ADDR);
   float y = getDataFromSensor(Y_REG_0_ADDR, Y_REG_1_ADDR, Y_REG_2_ADDR, Y_REG_3_ADDR);
 
-  float result = result + x*x + y*y;
-
-  Serial.print(result, 17);
+  result.val = result.val + x*x + y*y;
+  sendResult();
+  
   delay(100);
 }
-
+void sendResult()
+{
+  Serial.write(result.bytes[0]);
+  Serial.write(result.bytes[1]);
+  Serial.write(result.bytes[2]);
+  Serial.write(result.bytes[3]);
+}
 void turnOnSensor(){
   Wire.beginTransmission(UT_SENSOR_ADDR); 
   Wire.write(ON_OFF_REG_ADDR); 
