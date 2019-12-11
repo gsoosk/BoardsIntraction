@@ -1,4 +1,4 @@
-# Real-Time Embeded System Computer Assignment 2
+# Real-Time Embedded System Computer Assignment 2
 Main goal of this computer assignment is connection between boards, like I2C and Serial.
 
 ## How it works 
